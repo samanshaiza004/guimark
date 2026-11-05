@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:guimark:schema:adapter-result:v1",
+  "title": "Guimark adapter result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "framework",
+    "framework_version",
+    "workload_id",
+    "elapsed_ns",
+    "logical_items",
+    "changed_items",
+    "retained_row_nodes",
+    "order_checksum",
+    "content_checksum",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "framework": { "enum": ["alicorn", "dear-imgui"] },
+    "framework_version": { "type": "string" },
+    "workload_id": { "type": "string" },
+    "elapsed_ns": { "type": "integer", "minimum": 0 },
+    "logical_items": { "type": "integer", "minimum": 0 },
+    "changed_items": { "type": "integer", "minimum": 0 },
+    "retained_row_nodes": { "type": "integer", "minimum": 0 },
+    "order_checksum": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
+    "content_checksum": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
+    "diagnostics": { "type": "object" }
+  },
+  "additionalProperties": false
+}

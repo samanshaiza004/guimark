@@ -1,0 +1,9 @@
+out/
+__pycache__/
+*.py[cod]
+.DS_Store
+imgui.ini
+implementations/dear-imgui/third_party/
+implementations/dear-imgui/guimark-imgui
+results/*/
+!results/README.md

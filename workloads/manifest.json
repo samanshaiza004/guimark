@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "suite": "core-pipeline-cpu-v0.1",
+  "logical_items": 10000,
+  "viewport": { "width": 1280, "height": 900 },
+  "row_label_format": "Row %05d; updates replace the final digit with X",
+  "workloads": [
+    {
+      "id": "tree.construct.10000",
+      "operation": "construct",
+      "changed_items": 0,
+      "virtualized": false,
+      "status": "implemented"
+    },
+    {
+      "id": "tree.update.one.10000",
+      "operation": "update_one",
+      "changed_items": 1,
+      "target_item": 5000,
+      "virtualized": false,
+      "status": "implemented"
+    },
+    {
+      "id": "tree.update.ten_percent.10000",
+      "operation": "update_every_tenth",
+      "changed_items": 1000,
+      "virtualized": false,
+      "status": "implemented"
+    },
+    {
+      "id": "tree.reorder.swap_adjacent.10000",
+      "operation": "swap_adjacent",
+      "changed_items": 0,
+      "virtualized": false,
+      "status": "implemented"
+    }
+  ],
+  "planned_workloads": [
+    {
+      "id": "tree.idle.noop_event",
+      "reason": "Needs each framework's native event loop and repaint policy."
+    },
+    {
+      "id": "list.scroll.1000000",
+      "reason": "Virtualization policy and equal visible-range correctness must be specified."
+    },
+    {
+      "id": "editor.small",
+      "reason": "Requires a shared editor behavior and text/font fixture."
+    }
+  ]
+}
