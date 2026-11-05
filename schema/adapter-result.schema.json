@@ -11,23 +11,93 @@
     "elapsed_ns",
     "logical_items",
     "changed_items",
-    "retained_row_nodes",
     "order_checksum",
-    "content_checksum",
+    "output_validation",
     "diagnostics"
   ],
   "properties": {
-    "schema_version": { "const": 1 },
-    "framework": { "enum": ["alicorn", "dear-imgui"] },
-    "framework_version": { "type": "string" },
-    "workload_id": { "type": "string" },
-    "elapsed_ns": { "type": "integer", "minimum": 0 },
-    "logical_items": { "type": "integer", "minimum": 0 },
-    "changed_items": { "type": "integer", "minimum": 0 },
-    "retained_row_nodes": { "type": "integer", "minimum": 0 },
-    "order_checksum": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
-    "content_checksum": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
-    "diagnostics": { "type": "object" }
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "framework": {
+      "enum": [
+        "alicorn",
+        "dear-imgui"
+      ]
+    },
+    "framework_version": {
+      "type": "string"
+    },
+    "workload_id": {
+      "type": "string"
+    },
+    "elapsed_ns": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "logical_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "changed_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "retained_row_nodes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "order_checksum": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$"
+    },
+    "output_validation": {
+      "type": "object",
+      "required": [
+        "submitted_rows",
+        "visible_rows",
+        "content_checksum",
+        "rendered_output_checksum",
+        "baseline_rendered_output_checksum",
+        "rendered_output_kind"
+      ],
+      "properties": {
+        "submitted_rows": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "visible_rows": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{16}$"
+        },
+        "rendered_output_checksum": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{16}$"
+        },
+        "baseline_rendered_output_checksum": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9a-f]{16}$"
+        },
+        "rendered_output_kind": {
+          "enum": [
+            "alicorn-text-paint-display-list",
+            "dear-imgui-draw-data"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "diagnostics": {
+      "type": "object"
+    }
   },
   "additionalProperties": false
 }

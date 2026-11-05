@@ -1,9 +1,24 @@
 {
   "schema_version": 1,
-  "suite": "core-pipeline-cpu-v0.1",
+  "suite": "core-pipeline-cpu-v0.1.1",
   "logical_items": 10000,
-  "viewport": { "width": 1280, "height": 900 },
-  "row_label_format": "Row %05d; updates replace the final digit with X",
+  "viewport": {
+    "width": 1280,
+    "height": 900,
+    "display_scale": 1
+  },
+  "row_geometry": {
+    "pitch": 20,
+    "font_size": 16,
+    "font_family": "Atkinson Hyperlegible Next",
+    "font_weight": 400,
+    "padding": 0,
+    "visible_rows": 45,
+    "alicorn_row_extent": 20,
+    "alicorn_container_gap": 0,
+    "dear_imgui_item_spacing_y": 4
+  },
+  "row_label_format": "Row %05d; an updated row uses Row %04dX",
   "workloads": [
     {
       "id": "tree.construct.10000",
@@ -13,10 +28,20 @@
       "status": "implemented"
     },
     {
-      "id": "tree.update.one.10000",
+      "id": "tree.update.one.visible.10000",
+      "operation": "update_one",
+      "changed_items": 1,
+      "target_item": 10,
+      "visibility": "visible",
+      "virtualized": false,
+      "status": "implemented"
+    },
+    {
+      "id": "tree.update.one.offscreen.10000",
       "operation": "update_one",
       "changed_items": 1,
       "target_item": 5000,
+      "visibility": "offscreen",
       "virtualized": false,
       "status": "implemented"
     },
@@ -24,11 +49,12 @@
       "id": "tree.update.ten_percent.10000",
       "operation": "update_every_tenth",
       "changed_items": 1000,
+      "changed_every": 10,
       "virtualized": false,
       "status": "implemented"
     },
     {
-      "id": "tree.reorder.swap_adjacent.10000",
+      "id": "tree.reorder.text_order.swap_adjacent.10000",
       "operation": "swap_adjacent",
       "changed_items": 0,
       "virtualized": false,
@@ -47,6 +73,10 @@
     {
       "id": "editor.small",
       "reason": "Requires a shared editor behavior and text/font fixture."
+    },
+    {
+      "id": "tree.update_amplification",
+      "reason": "Requires separately defined framework work counters and retained-region scenarios."
     }
   ]
 }
