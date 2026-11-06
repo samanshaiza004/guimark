@@ -94,11 +94,11 @@ validate_output :: proc(
 	rows, found := rt.nodes[rows_id]
 	if !found || rows == nil || len(rows.children) != ROWS || len(baseline_ids) != ROWS { return {}, false }
 	identity_index := make(map[alicorn.Node_ID]int, allocator=rt.scratch_allocator)
-	for index, id in baseline_ids { identity_index[id] = index }
+	for id, index in baseline_ids { identity_index[id] = index }
 	row_nodes := make(map[alicorn.Node_ID]^alicorn.Node, allocator=rt.scratch_allocator)
 	output.content_checksum = 0xcbf29ce484222325
 	order_hash: u64 = 0xcbf29ce484222325
-	for position, id in rows.children {
+	for id, position in rows.children {
 		node, exists := rt.nodes[id]
 		if !exists || node == nil || node.kind != .Text { return {}, false }
 		item, identity_found := identity_index[id]
@@ -166,7 +166,7 @@ print_result :: proc(
 	before, after: alicorn.Frame_Stats,
 ) {
 	fmt.printf(
-		"{\"schema_version\":1,\"framework\":\"alicorn\",\"framework_version\":\"external-checkout\",\"workload_id\":\"%s\",\"elapsed_ns\":%d,\"logical_items\":%d,\"changed_items\":%d,\"retained_row_nodes\":%d,\"order_checksum\":\"%016x\",\"output_validation\":{\"submitted_rows\":%d,\"visible_rows\":%d,\"content_checksum\":\"%016x\",\"rendered_output_checksum\":\"%016x\",\"baseline_rendered_output_checksum\":%s,\"rendered_output_kind\":\"alicorn-text-paint-display-list\"},\"diagnostics\":{\"descriptions_emitted\":%d,\"reconcile_nodes_visited\":%d,\"layout_nodes_visited\":%d,\"paint_nodes_visited\":%d,\"nodes_created\":%d,\"nodes_retired\":%d}}\n",
+		"{{\"schema_version\":1,\"framework\":\"alicorn\",\"framework_version\":\"external-checkout\",\"workload_id\":\"%s\",\"elapsed_ns\":%d,\"logical_items\":%d,\"changed_items\":%d,\"retained_row_nodes\":%d,\"order_checksum\":\"%016x\",\"output_validation\":{{\"submitted_rows\":%d,\"visible_rows\":%d,\"content_checksum\":\"%016x\",\"rendered_output_checksum\":\"%016x\",\"baseline_rendered_output_checksum\":%s,\"rendered_output_kind\":\"alicorn-text-paint-display-list\"}},\"diagnostics\":{{\"descriptions_emitted\":%d,\"reconcile_nodes_visited\":%d,\"layout_nodes_visited\":%d,\"paint_nodes_visited\":%d,\"nodes_created\":%d,\"nodes_retired\":%d}}}}\n",
 		workload, elapsed_ns, ROWS, changed, output.submitted_rows, output.order_checksum,
 		output.submitted_rows, output.visible_rows, output.content_checksum, output.rendered_output_checksum, baseline_checksum,
 		after.descriptions_emitted-before.descriptions_emitted,
@@ -208,13 +208,13 @@ main :: proc() {
 	changed := 0
 	swap := workload == "tree.reorder.text_order.swap_adjacent.10000"
 	measure_labels := base[:]
-	var rows_id: alicorn.Node_ID
-	var baseline_ids: [dynamic]alicorn.Node_ID
+	rows_id: alicorn.Node_ID
+	baseline_ids: [dynamic]alicorn.Node_ID
 	defer delete(baseline_ids)
 	baseline_checksum := "null"
 	if workload != "tree.construct.10000" {
 		rows_id = render_tree(&rt, base[:])
-		var good: bool
+		good: bool
 		baseline_ids, good = snapshot_ids(&rt, rows_id)
 		if !good { fmt.eprintln("could not inspect Alicorn baseline row tree"); os.exit(1) }
 		baseline, baseline_ok := validate_output(&rt, rows_id, baseline_ids[:], base[:], false)
@@ -231,7 +231,7 @@ main :: proc() {
 	elapsed_ns := time.duration_nanoseconds(time.since(start))
 	after := rt.stats
 	if workload == "tree.construct.10000" {
-		var good: bool
+		good: bool
 		baseline_ids, good = snapshot_ids(&rt, rows_id)
 		if !good { fmt.eprintln("could not inspect Alicorn constructed row tree"); os.exit(1) }
 	}

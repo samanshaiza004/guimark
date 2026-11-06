@@ -242,7 +242,7 @@ def main():
     }
     builds["alicorn"]["source"] = revision(args.alicorn_root)
     builds["dear-imgui"]["source"] = revision(ROOT / "implementations" / "dear-imgui" / "third_party" / "imgui")
-    builds["guimark"] = revision(ROOT)
+    builds["guimark"] = {"source": revision(ROOT)}
     if not all(builds[name].get("source") for name in ("alicorn", "dear-imgui", "guimark")):
         parser.error("Guimark, Alicorn, and Dear ImGui must each be Git checkouts for a capture")
     dirty_sources = [name for name in ("alicorn", "dear-imgui", "guimark") if builds[name]["source"]["dirty"]]
@@ -291,7 +291,7 @@ def main():
     capture = {
         "guimark_schema_version": 1,
         "suite": MANIFEST["suite"],
-        "guimark_revision": builds["guimark"],
+        "guimark_revision": builds["guimark"]["source"],
         "environment": environment,
         "builds": builds,
         "dirty_source_override": bool(dirty_sources and args.allow_dirty),
